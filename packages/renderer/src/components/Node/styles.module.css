@@ -1,0 +1,76 @@
+.Node {
+  --node-padding: 20px;
+
+  position: absolute;
+  padding: var(--node-padding);
+}
+
+.NodeContent {
+  position: relative;
+  padding: 10px 20px;
+  margin: -2px;
+  border-radius: 5px;
+  border: 1px solid black;
+  background-color: white;
+  z-index: 2;
+}
+.isSelected .NodeContent {
+  border-color: cornflowerblue;
+  background-color: cornflowerblue;
+  color: white;
+}
+
+.NodeInputPorts,
+.NodeOutputPorts {
+  position: absolute;
+  left: var(--node-padding);
+  right: var(--node-padding);
+  top: var(--node-padding);
+  bottom: var(--node-padding);
+
+  opacity: 0;
+  transition: opacity 200ms linear;
+
+  z-index: 1;
+  pointer-events: none;
+}
+
+.Node.isDraggingPort:hover .NodeInputPorts {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.Node.isNotDraggingPort:hover .NodeOutputPorts {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.NodeInputPorts > *,
+.NodeOutputPorts > * {
+  position: absolute;
+}
+
+.NodeInputPorts > *,
+.NodeOutputPorts > * {
+  position: absolute;
+}
+.NodeInputPorts > *:nth-child(1),
+.NodeOutputPorts > *:nth-child(1) {
+  left: 50%;
+  top: 0;
+}
+.NodeInputPorts > *:nth-child(2),
+.NodeOutputPorts > *:nth-child(2) {
+  left: 100%;
+  top: 50%;
+}
+.NodeInputPorts > *:nth-child(3),
+.NodeOutputPorts > *:nth-child(3) {
+  left: 50%;
+  top: 100%;
+}
+.NodeInputPorts > *:nth-child(4),
+.NodeOutputPorts > *:nth-child(4) {
+  left: 0;
+  top: 50%;
+}

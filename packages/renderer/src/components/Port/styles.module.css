@@ -1,0 +1,29 @@
+.Port {
+  --port-radius: 40px;
+
+  width: var(--port-radius);
+  height: var(--port-radius);
+  cursor: pointer;
+  margin-top: calc(var(--port-radius) / -2);
+  margin-left: calc(var(--port-radius) / -2);
+}
+
+.PortTarget {
+  position: relative;
+  width: var(--port-radius);
+  height: var(--port-radius);
+}
+
+.PortTarget::before {
+  content: "";
+  width: 15px;
+  height: 15px;
+
+  border-radius: 50%;
+  background-color: lightgray;
+
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate3d(-50%, -50%, 0);
+}
