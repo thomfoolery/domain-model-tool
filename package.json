@@ -17,6 +17,7 @@
   "dependencies": {
     "electron-store": "^8.0.1",
     "react-network-canvas": "link:/Users/thomasyuill/src/github.com/thomfoolery/react-network-canvas",
+    "recoil": "^0.7.3-alpha.2",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

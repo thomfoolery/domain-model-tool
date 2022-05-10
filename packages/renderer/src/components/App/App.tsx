@@ -1,37 +1,47 @@
 import { useState } from "react";
-import { NetworkCanvas } from "react-network-canvas";
+import { RecoilRoot } from "recoil";
 import { v1 as generateUuid } from "uuid";
+import { NetworkCanvas } from "react-network-canvas";
 
-import { Node, Port } from "@/components";
+import { isFormElementActive } from "@/utils";
+import { Node, Port, Inspector } from "@/components";
 import { GraphManagerContextProvider } from "@/context";
+import { initialGraph, setGraphState } from "@/state";
 
 import styles from "./styles.module.css";
+import { theme } from "./theme";
 
 const App = () => {
   const [graphManager, setGraphManager] = useState(null);
-
-  const nodes: any[] = [];
-  const edges: any[] = [];
+  const [selectedNode, setSelectedNode] = useState(null);
 
   const callbacks = {
     onMount(graphManager: any) {
       setGraphManager(graphManager);
     },
+
+    onChangeSelectedNodeIds(selectedNodeIds: string[], graphManager: any) {
+      if (selectedNodeIds.length === 1) {
+        const selectedNode = graphManager.getNodeById(selectedNodeIds[0]);
+        setSelectedNode(selectedNode);
+      } else [setSelectedNode(null)];
+    },
+
     onClickCanvas(event, position, graphManager) {
       // create node at click position
       const node = graphManager.createNode({
         position,
         inputPorts: [
-          { id: generateUuid() },
-          { id: generateUuid() },
-          { id: generateUuid() },
-          { id: generateUuid() },
+          { id: generateUuid(), data: { position: "N" } },
+          { id: generateUuid(), data: { position: "E" } },
+          { id: generateUuid(), data: { position: "S" } },
+          { id: generateUuid(), data: { position: "W" } },
         ],
         outputPorts: [
-          { id: generateUuid() },
-          { id: generateUuid() },
-          { id: generateUuid() },
-          { id: generateUuid() },
+          { id: generateUuid(), data: { position: "N" } },
+          { id: generateUuid(), data: { position: "E" } },
+          { id: generateUuid(), data: { position: "S" } },
+          { id: generateUuid(), data: { position: "W" } },
         ],
       });
 
@@ -39,15 +49,20 @@ const App = () => {
       graphManager.selectedNodeIds = [node.id];
     },
     onClickPort(event, port, parentNode, graphManager) {
-      console.log(event, port, parentNode);
       // create a connected node...
     },
     onKeyPress(event, key, graphManager) {
-      console.log(event, key);
-      if (key === "Backspace" && graphManager.selectedNodeIds.length > 0) {
+      if (
+        key === "Backspace" &&
+        graphManager.selectedNodeIds.length > 0 &&
+        !isFormElementActive(document.activeElement)
+      ) {
         // delete selected nodes
         graphManager.removeNodesByIds(graphManager.selectedNodeIds);
       }
+    },
+    onMutateGraph(graphEvent) {
+      setGraphState(graphEvent.graph);
     },
   };
 
@@ -63,18 +78,20 @@ const App = () => {
     PortComponent: Port,
   };
 
-  console.log(graphManager);
-
   return (
     <div className={styles.App}>
-      <GraphManagerContextProvider value={graphManager}>
-        <NetworkCanvas
-          nodes={nodes}
-          edges={edges}
-          options={options}
-          {...callbacks}
-        />
-      </GraphManagerContextProvider>
+      <RecoilRoot>
+        <GraphManagerContextProvider value={graphManager}>
+          <NetworkCanvas
+            theme={theme}
+            {...callbacks}
+            options={options}
+            nodes={initialGraph.nodes}
+            edges={initialGraph.edges}
+          />
+          <Inspector selectedNode={selectedNode} />
+        </GraphManagerContextProvider>
+      </RecoilRoot>
     </div>
   );
 };

@@ -1,4 +1,6 @@
 import { useState } from "react";
+
+import { useNodeState } from "@/hooks";
 import { useGraphManager } from "@/context";
 
 import styles from "./styles.module.css";
@@ -20,8 +22,10 @@ function Node(props: any) {
     top: position.y,
   };
 
-  const [isDraggingPort, setIsDraggingPort] = useState(false);
   const graphManager = useGraphManager();
+  const [labelValue] = useNodeState(node.id, "label");
+
+  const [isDraggingPort, setIsDraggingPort] = useState(false);
 
   const onMouseEnter = () => {
     if (graphManager?.dragData?.source === "port") {
@@ -64,7 +68,9 @@ function Node(props: any) {
           <PortComponent key={port.id} node={node} port={port} type="output" />
         ))}
       </div>
-      <div className={styles.NodeContent}>Hello world</div>
+      <div className={styles.NodeContent}>
+        <div className={styles.NodeContentLabel}>{labelValue || " "}</div>
+      </div>
     </div>
   );
 }

@@ -13,10 +13,9 @@ function Port(props: Props) {
 
   const classList = [
     styles.Port,
+    styles[`Position${port.data.position}`],
     type === "input" ? styles.Input : styles.Output,
   ];
-
-  // console.log(onMouseUp, onMouseDown);
 
   return (
     <div className={classList.join(" ")}>

@@ -1,0 +1,38 @@
+.InspectorContainer {
+  position: fixed;
+  right: 0;
+  top: 0;
+  height: 100%;
+}
+
+.Inspector {
+  position: absolute;
+  right: 0;
+
+  width: 250px;
+  height: 100%;
+  background-color: white;
+  border-left: 1px solid lightgray;
+
+  transition: transform 200ms ease-out;
+  transform: translate3d(90%, 0, 0);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1), 0 2px 3px rgba(0, 0, 0, 0.1);
+}
+
+.InspectorContainer.isOpen .Inspector {
+  transform: translate3d(0, 0, 0);
+}
+
+.InspectorForm {
+  margin: 10px;
+}
+
+.InspectorForm input,
+.InspectorForm textarea {
+  width: 100%;
+}
+
+.InspectorForm * + label {
+  display: block;
+  margin-top: 1em;
+}

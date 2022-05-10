@@ -1,5 +1,6 @@
 .Port {
   --port-radius: 40px;
+  --port-target-radius: 10px;
 
   width: var(--port-radius);
   height: var(--port-radius);
@@ -16,14 +17,40 @@
 
 .PortTarget::before {
   content: "";
-  width: 15px;
-  height: 15px;
+  width: var(--port-target-radius);
+  height: var(--port-target-radius);
 
   border-radius: 50%;
-  background-color: lightgray;
+  background-color: rgba(0, 0, 0, 0.2);
 
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate3d(-50%, -50%, 0);
+}
+
+.PositionN {
+  cursor: n-resize;
+}
+.PositionE {
+  cursor: e-resize;
+}
+.PositionS {
+  cursor: s-resize;
+}
+.PositionW {
+  cursor: w-resize;
+}
+
+.PositionN .PortTarget::before {
+  margin-top: calc(var(--port-target-radius) * -1);
+}
+.PositionE .PortTarget::before {
+  margin-left: calc(var(--port-target-radius));
+}
+.PositionS .PortTarget::before {
+  margin-top: calc(var(--port-target-radius));
+}
+.PositionW .PortTarget::before {
+  margin-left: calc(var(--port-target-radius) * -1);
 }
