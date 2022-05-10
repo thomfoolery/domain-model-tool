@@ -1,5 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { RecoilRoot } from "recoil";
 import { App } from "./components";
 import "./samples/electron-store";
 import "./samples/preload-module";
@@ -9,7 +10,9 @@ const root = createRoot(document.getElementById("root")!);
 
 root.render(
   <StrictMode>
-    <App />
+    <RecoilRoot>
+      <App />
+    </RecoilRoot>
   </StrictMode>
 );
 

@@ -11,9 +11,8 @@
   position: relative;
   width: var(--width);
 
-  padding: 12px 22px;
+  padding: 10px 20px;
   border-radius: 5px;
-  margin: -2px;
 
   background-color: #d4fff6;
   outline: 1px solid #009e7b;
@@ -28,6 +27,7 @@
 }
 
 .NodeContentLabel {
+  height: 20px;
   line-height: 20px;
   min-height: 1em;
   font-weight: bold;

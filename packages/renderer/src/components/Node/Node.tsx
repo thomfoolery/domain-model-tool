@@ -59,17 +59,29 @@ function Node(props: any) {
       className={containerClassList.join(" ")}
     >
       <div className={styles.NodeInputPorts}>
-        {inputPorts.map((port) => (
-          <PortComponent key={port.id} node={node} port={port} type="input" />
+        {inputPorts.map((port, index) => (
+          <PortComponent
+            key={port.id}
+            node={node}
+            port={port}
+            type="input"
+            index={index}
+          />
         ))}
       </div>
       <div className={styles.NodeOutputPorts}>
-        {outputPorts.map((port) => (
-          <PortComponent key={port.id} node={node} port={port} type="output" />
+        {outputPorts.map((port, index) => (
+          <PortComponent
+            key={port.id}
+            node={node}
+            port={port}
+            type="output"
+            index={index}
+          />
         ))}
       </div>
       <div className={styles.NodeContent}>
-        <div className={styles.NodeContentLabel}>{labelValue || " "}</div>
+        <div className={styles.NodeContentLabel}>{labelValue}</div>
       </div>
     </div>
   );

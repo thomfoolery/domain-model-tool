@@ -6,14 +6,17 @@ interface Props {
   type: "input" | "output";
   onMouseUp(): void;
   onMouseDown(): void;
+  index: number;
 }
 
+const DIRECTION = ["N", "E", "S", "W"];
+
 function Port(props: Props) {
-  const { port, type, onMouseUp, onMouseDown } = props;
+  const { port, type, onMouseUp, onMouseDown, index = 0 } = props;
 
   const classList = [
     styles.Port,
-    styles[`Position${port.data.position}`],
+    styles[`Position${DIRECTION[index]}`],
     type === "input" ? styles.Input : styles.Output,
   ];
 
