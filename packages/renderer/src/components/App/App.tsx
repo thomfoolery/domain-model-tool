@@ -30,7 +30,10 @@ const App = () => {
     onClickCanvas(event, position, graphManager) {
       // create node at click position
       const node = graphManager.createNode({
-        position,
+        position: {
+          x: position.x - 120,
+          y: position.y - 40,
+        },
         inputPorts: [
           { id: generateUuid(), data: { position: "N" } },
           { id: generateUuid(), data: { position: "E" } },
@@ -79,20 +82,31 @@ const App = () => {
   };
 
   return (
-    <div className={styles.App}>
-      <RecoilRoot>
-        <GraphManagerContextProvider value={graphManager}>
-          <NetworkCanvas
-            theme={theme}
-            {...callbacks}
-            options={options}
-            nodes={initialGraph.nodes}
-            edges={initialGraph.edges}
-          />
-          <Inspector selectedNode={selectedNode} />
-        </GraphManagerContextProvider>
-      </RecoilRoot>
-    </div>
+    <RecoilRoot>
+      <GraphManagerContextProvider value={graphManager}>
+        <div className={styles.App}>
+          <div className={styles.TitleBar}>
+            <div className={styles.TitleBarControls}>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+
+            <span>Domain model tools</span>
+          </div>
+          <div className={styles.Canvas}>
+            <NetworkCanvas
+              theme={theme}
+              {...callbacks}
+              options={options}
+              nodes={initialGraph.nodes}
+              edges={initialGraph.edges}
+            />
+            <Inspector selectedNode={selectedNode} />
+          </div>
+        </div>
+      </GraphManagerContextProvider>
+    </RecoilRoot>
   );
 };
 

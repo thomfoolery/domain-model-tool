@@ -1,6 +1,6 @@
 .Port {
   --port-radius: 40px;
-  --port-target-radius: 10px;
+  --port-target-radius: 20px;
 
   width: var(--port-radius);
   height: var(--port-radius);
@@ -16,16 +16,26 @@
 }
 
 .PortTarget::before {
-  content: "";
-  width: var(--port-target-radius);
-  height: var(--port-target-radius);
-
-  border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.2);
+  content: "＋";
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 
   position: absolute;
   left: 50%;
   top: 50%;
+
+  width: var(--port-target-radius);
+  height: var(--port-target-radius);
+  border-radius: 50%;
+
+  color: #009474;
+  background-color: white;
+
+  font-size: 16px;
+  font-weight: 900;
+
   transform: translate3d(-50%, -50%, 0);
 }
 

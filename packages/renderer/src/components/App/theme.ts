@@ -1,6 +1,10 @@
 const theme = {
+  selectbox: {
+    backgroundColor: "#00ffc822",
+    boxShadow: "0 0 0 1px #009e7b",
+  },
   edge: {
-    stroke: "#00ffc8",
+    stroke: "lightgray",
     hover: {
       stroke: "#ff00dd",
     },

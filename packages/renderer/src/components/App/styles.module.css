@@ -1,7 +1,58 @@
 .App {
-  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.TitleBar {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  width: 100vw;
+  height: 30px;
+  padding-right: 30px;
+  border-bottom: 1px solid rgb(2, 192, 151);
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1), 2px 0 3px rgba(0, 0, 0, 0.1);
+
+  color: #00755b;
+  background-color: #00ffc8;
+
+  z-index: 9;
+
+  -webkit-app-region: drag;
+}
+
+.TitleBarControls {
+  width: 66px;
+  height: 28px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 8px;
+  margin-right: 10px;
+}
+
+.TitleBarControls > span {
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.TitleBarControls > span + span {
+  margin-left: 8px;
+}
+
+.Canvas {
+  flex: 1;
+  width: 100vw;
+  overflow: hidden;
 }
