@@ -56,6 +56,10 @@
   color: #00755b;
 }
 
+.TitleBar menu {
+  display: flex;
+}
+
 .TitleBar menu button {
   -webkit-appearance: none;
 
@@ -70,13 +74,29 @@
   cursor: pointer;
   outline: none;
 }
-.TitleBar menu > button {
+.TitleBar menu > * {
+  position: relative;
   margin: 0 4px;
 }
 .TitleBar menu button:hover,
 .TitleBar menu button:focus,
 .TitleBar menu button:active {
   text-decoration: underline;
+}
+
+.TitleBarFilePath {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-style: italic;
+  font-size: 14px;
+  margin-left: 40px;
+  font-weight: bolder;
+}
+
+.TitleBarFilePath svg {
+  margin-right: 4px;
 }
 
 .Canvas {

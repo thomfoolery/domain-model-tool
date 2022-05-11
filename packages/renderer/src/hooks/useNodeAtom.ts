@@ -1,8 +1,8 @@
 import { useRecoilState } from "recoil";
 
-import { getNodeAtom, saveLocalStorage, updateGraphNodeData } from "@/state";
+import { getNodeAtom, saveLocalStorage, updateNodeData } from "@/state";
 
-function useNodeState(nodeId: string, key: string) {
+function useNodeAtom(nodeId: string, key: string) {
   const nodeState = getNodeAtom(nodeId);
 
   if (nodeState && nodeState[key]) {
@@ -15,13 +15,13 @@ function useNodeState(nodeId: string, key: string) {
           return setter((currentValue: any) => {
             const value = valueOrFn(currentValue);
 
-            updateGraphNodeData(nodeId, key, value);
+            updateNodeData(nodeId, key, value);
             saveLocalStorage();
             return value;
           });
         }
 
-        updateGraphNodeData(nodeId, key, valueOrFn);
+        updateNodeData(nodeId, key, valueOrFn);
         saveLocalStorage();
         return setter(valueOrFn);
       },
@@ -32,4 +32,4 @@ function useNodeState(nodeId: string, key: string) {
   return [null, () => null];
 }
 
-export { useNodeState };
+export { useNodeAtom };

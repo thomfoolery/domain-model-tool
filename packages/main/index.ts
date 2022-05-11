@@ -1,4 +1,4 @@
-import { app, BrowserWindow, shell } from "electron";
+import { app, BrowserWindow, shell, ipcMain, dialog } from "electron";
 import { release } from "os";
 import { join } from "path";
 import "./samples/electron-store";
@@ -46,6 +46,18 @@ async function createWindow() {
     if (url.startsWith("https:")) shell.openExternal(url);
     return { action: "deny" };
   });
+
+  ipcMain.handle("openFileDialog", () =>
+    dialog.showOpenDialogSync({
+      properties: ["openFile"],
+      filters: [{ name: "JSON", extensions: ["json"] }],
+    })
+  );
+  ipcMain.handle("saveFileDialog", () =>
+    dialog.showSaveDialogSync({
+      filters: [{ name: "JSON", extensions: ["json"] }],
+    })
+  );
 }
 
 app.whenReady().then(createWindow);

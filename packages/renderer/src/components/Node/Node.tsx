@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useNodeState, useGraphManager } from "@/hooks";
+import { useNodeAtom, useGraphManager } from "@/hooks";
 
 import styles from "./styles.module.css";
 
@@ -22,7 +22,7 @@ function Node(props: any) {
   };
 
   const graphManager = useGraphManager();
-  const [labelValue] = useNodeState(node.id, "label");
+  const [labelValue] = useNodeAtom(node.id, "label");
 
   const [isDraggingPort, setIsDraggingPort] = useState(false);
 

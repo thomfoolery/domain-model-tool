@@ -2,10 +2,11 @@ import { useState, useMemo, useEffect } from "react";
 import { v1 as generateUuid } from "uuid";
 import { NetworkCanvas } from "react-network-canvas";
 
+import { useAppAtom } from "@/hooks";
 import { isFormElementActive } from "@/utils";
-import { Node, Port, Inspector, FileMenu, SettingsMenu } from "@/components";
 import { GraphManagerContextProvider } from "@/context";
 import { initialGraph, setGraphState } from "@/state";
+import { Node, Port, Inspector, FileMenu, SettingsMenu } from "@/components";
 
 import styles from "./styles.module.css";
 import { theme } from "./theme";
@@ -28,6 +29,7 @@ function Marker(props: { id: string; color: string }) {
 }
 
 const App = () => {
+  const filePath = useAppAtom("filePath");
   const [graphManager, setGraphManager] = useState(null);
   const [selectedNode, setSelectedNode] = useState(null);
   const [isFileMenuOpen, setIsFileMenuOpen] = useState<boolean>(false);
@@ -217,13 +219,36 @@ const App = () => {
             <div></div>
           </div>
 
-          <div className={styles.TitleBarTitle}>Domain model tools</div>
+          <div className={styles.TitleBarTitle}>Schematic</div>
+
+          <div className={styles.TitleBarFilePath}>
+            {filePath && (
+              <>
+                <svg
+                  width="20"
+                  height="20"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill="currentColor"
+                    fillRule="evenodd"
+                    d="M6 11h8v-2h-8v2zm0 4h8v-2h-8v2zm0-8h4v-2h-4v2zm6-5h-6.5a1.5 1.5 0 0 0-1.5 1.5v13a1.5 1.5 0 0 0 1.5 1.5h9a1.5 1.5 0 0 0 1.5-1.5v-10.5l-4-4z"
+                  />
+                </svg>
+                {filePath}
+              </>
+            )}
+          </div>
+
           <menu>
-            <button onClick={handleClickFileMenu}>
-              File
+            <div>
+              <button onClick={handleClickFileMenu}>File</button>
               <FileMenu isOpen={isFileMenuOpen} closeMenu={handleCloseMenus} />
-            </button>
-            <button onClick={handleClickSettingsMenu}>Settings</button>
+            </div>
+            <div>
+              <button onClick={handleClickSettingsMenu}>Settings</button>
+            </div>
           </menu>
         </div>
         <div className={styles.Canvas}>

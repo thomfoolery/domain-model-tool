@@ -1,4 +1,4 @@
-import { useNodeState, useGraphManager } from "@/hooks";
+import { useNodeAtom, useGraphManager } from "@/hooks";
 
 import styles from "./styles.module.css";
 
@@ -28,8 +28,8 @@ function InspectorForm(props: Props) {
 
   const graphManager = useGraphManager();
 
-  const [labelValue, setLabelValue] = useNodeState(selectedNode.id, "label");
-  const [descriptionValue, setDescriptionValue] = useNodeState(
+  const [labelValue, setLabelValue] = useNodeAtom(selectedNode.id, "label");
+  const [descriptionValue, setDescriptionValue] = useNodeAtom(
     selectedNode.id,
     "description"
   );
