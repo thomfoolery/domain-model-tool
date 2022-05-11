@@ -1,0 +1,38 @@
+.FileMenu {
+  position: absolute;
+  left: 0;
+  top: 100%;
+
+  width: 150px;
+  margin-top: -5px;
+
+  white-space: nowrap;
+
+  background-color: #d4fff6;
+  border: 1px solid #02c097;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1), 2px 0 3px rgba(0, 0, 0, 0.1);
+}
+
+.FileMenu button {
+  width: 100%;
+  display: block;
+  padding: 5px 10px;
+  margin-left: 0;
+}
+
+.FileMenu button + button {
+  border-top: 1px solid #02c097;
+}
+
+.FileMenu button:hover,
+.FileMenu button:focus {
+  text-decoration: underline !important;
+}
+.FileMenu button:disabled:hover,
+.FileMenu button:disabled:focus {
+  text-decoration: none !important;
+}
+
+.FileMenu button:disabled {
+  opacity: 0.3;
+}

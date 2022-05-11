@@ -39,7 +39,7 @@
   margin-right: 10px;
 }
 
-.TitleBarControls > span {
+.TitleBarControls > * {
   display: block;
   width: 12px;
   height: 12px;
@@ -47,8 +47,36 @@
   background-color: rgba(0, 0, 0, 0.2);
 }
 
-.TitleBarControls > span + span {
+.TitleBarControls > * + * {
   margin-left: 8px;
+}
+
+.TitleBarTitle {
+  font-weight: bold;
+  color: #00755b;
+}
+
+.TitleBar menu button {
+  -webkit-appearance: none;
+
+  position: relative;
+  height: 30px;
+  border: none;
+
+  background-color: transparent;
+  color: #00755b;
+
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+}
+.TitleBar menu > button {
+  margin: 0 4px;
+}
+.TitleBar menu button:hover,
+.TitleBar menu button:focus,
+.TitleBar menu button:active {
+  text-decoration: underline;
 }
 
 .Canvas {

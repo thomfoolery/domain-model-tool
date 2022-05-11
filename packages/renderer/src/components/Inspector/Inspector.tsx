@@ -1,4 +1,4 @@
-import { useNodeState } from "@/hooks";
+import { useNodeState, useGraphManager } from "@/hooks";
 
 import styles from "./styles.module.css";
 
@@ -26,6 +26,8 @@ function Inspector(props: Props) {
 function InspectorForm(props: Props) {
   const { selectedNode } = props;
 
+  const graphManager = useGraphManager();
+
   const [labelValue, setLabelValue] = useNodeState(selectedNode.id, "label");
   const [descriptionValue, setDescriptionValue] = useNodeState(
     selectedNode.id,
@@ -38,6 +40,11 @@ function InspectorForm(props: Props) {
 
   const onChangeDescriptionValue = (e: any) => {
     setDescriptionValue(e.target.value);
+  };
+
+  const handleClickDelete = () => {
+    graphManager.removeNodeById(selectedNode.id);
+    // TODO cleanup node data & atoms
   };
 
   return (
@@ -58,6 +65,9 @@ function InspectorForm(props: Props) {
         id={`${selectedNode.id}-description`}
         rows={5}
       />
+      <div className={styles.InspectorformActions}>
+        <button onClick={handleClickDelete}>Delete</button>
+      </div>
     </div>
   );
 }

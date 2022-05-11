@@ -1,7 +1,6 @@
 import { useState } from "react";
 
-import { useNodeState } from "@/hooks";
-import { useGraphManager } from "@/context";
+import { useNodeState, useGraphManager } from "@/hooks";
 
 import styles from "./styles.module.css";
 

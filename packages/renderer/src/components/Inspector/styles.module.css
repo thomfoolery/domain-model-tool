@@ -49,3 +49,20 @@
 .InspectorForm * + label {
   margin-top: 1em;
 }
+
+.InspectorformActions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.InspectorformActions button {
+  -webkit-appearance: none;
+  border: none;
+  background-color: #00755b;
+  color: #d4fff6;
+  font-weight: normal;
+
+  padding: 5px 10px;
+  border-radius: 4px;
+}

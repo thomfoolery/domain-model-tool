@@ -1,5 +1,5 @@
 .Node {
-  --node-padding: 21px;
+  --node-padding: 20px;
 
   position: absolute;
   padding: var(--node-padding);
@@ -14,9 +14,9 @@
   padding: 10px 20px;
   border-radius: 5px;
 
+  color: #00755b;
   background-color: #d4fff6;
   outline: 1px solid #009e7b;
-  color: #00755b;
 
   z-index: 2;
   cursor: pointer;
@@ -27,10 +27,10 @@
 }
 
 .NodeContentLabel {
-  height: 20px;
   line-height: 20px;
-  min-height: 1em;
+  min-height: 20px;
   font-weight: bold;
+  color: #00755b;
 }
 
 .NodeInputPorts,
@@ -75,7 +75,7 @@
 .NodeInputPorts > *:nth-child(2),
 .NodeOutputPorts > *:nth-child(2) {
   left: 100%;
-  top: 50%;
+  top: 20px;
 }
 .NodeInputPorts > *:nth-child(3),
 .NodeOutputPorts > *:nth-child(3) {
@@ -85,5 +85,5 @@
 .NodeInputPorts > *:nth-child(4),
 .NodeOutputPorts > *:nth-child(4) {
   left: 0;
-  top: 50%;
+  top: 20px;
 }

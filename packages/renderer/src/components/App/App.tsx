@@ -3,16 +3,35 @@ import { v1 as generateUuid } from "uuid";
 import { NetworkCanvas } from "react-network-canvas";
 
 import { isFormElementActive } from "@/utils";
-import { Node, Port, Inspector } from "@/components";
+import { Node, Port, Inspector, FileMenu, SettingsMenu } from "@/components";
 import { GraphManagerContextProvider } from "@/context";
 import { initialGraph, setGraphState } from "@/state";
 
 import styles from "./styles.module.css";
 import { theme } from "./theme";
 
+function Marker(props: { id: string; color: string }) {
+  return (
+    <marker
+      refX="10"
+      refY="10"
+      id={props.id}
+      orient="auto"
+      markerWidth="3"
+      markerHeight="3"
+      viewBox="0 0 20 20"
+      markerUnits="strokeWidth"
+    >
+      <circle cx="10" cy="10" r="10" fill={props.color} />
+    </marker>
+  );
+}
+
 const App = () => {
   const [graphManager, setGraphManager] = useState(null);
   const [selectedNode, setSelectedNode] = useState(null);
+  const [isFileMenuOpen, setIsFileMenuOpen] = useState<boolean>(false);
+  const [isSettingsMenuOpen, setIsSettingsMenuOpen] = useState<boolean>(false);
 
   const callbacks = useMemo(
     () => ({
@@ -75,13 +94,13 @@ const App = () => {
 
         switch (outputPosition) {
           case "N":
-            position.y -= 60;
+            position.y -= 80;
             break;
           case "E":
             position.x += nodeDimensions.width;
             break;
           case "S":
-            position.y += 60;
+            position.y += nodeDimensions.height;
             break;
           case "W":
             position.x -= nodeDimensions.width;
@@ -89,30 +108,6 @@ const App = () => {
           default:
             break;
         }
-
-        // const position = edgesOut.reduce(
-        //   (acc, edge) => {
-        //     const nodeElement = document.querySelector(
-        //       `#Node-${edge.to.nodeId}`
-        //     );
-        //     const BCR = nodeElement.getBoundingClientRect();
-        //     const nodeDimensions =
-        //       graphManager.workspace.getElementDimensions(nodeElement);
-        //     const position = graphManager.workspace.getCanvasPosition(BCR);
-
-        //     if (position.y >= acc.y) {
-        //       return {
-        //         ...acc,
-        //         y: position.y + nodeDimensions.height,
-        //       };
-        //     }
-        //     return acc;
-        //   },
-        //   {
-        //     x: initialPosition.x + nodeDimensions.width + 50,
-        //     y: initialPosition.y,
-        //   }
-        // );
 
         const node = graphManager.createNode({
           position,
@@ -181,6 +176,35 @@ const App = () => {
     maxZoom: 1.5,
     NodeComponent: Node,
     PortComponent: Port,
+    edgeMarkerEnd: "url(#edge-marker)",
+    edgeMarkerStart: "url(#edge-marker)",
+    SvgEdgeMarkersDefs: (
+      <>
+        <defs>
+          <Marker id="edge-marker-start" color="lightgray" />
+          <Marker id="edge-marker-start-hover" color="#ff00dd" />
+          <Marker id="edge-marker-start-draft" color="lightgray" />
+          <Marker id="edge-marker-end" color="lightgray" />
+          <Marker id="edge-marker-end-hover" color="#ff00dd" />
+          <Marker id="edge-marker-end-draft" color="lightgray" />
+        </defs>
+      </>
+    ),
+  };
+
+  const handleClickFileMenu = () => {
+    setIsFileMenuOpen((isOpen: boolean) => !isOpen);
+    setIsSettingsMenuOpen(false);
+  };
+
+  const handleClickSettingsMenu = () => {
+    setIsSettingsMenuOpen((isOpen: boolean) => !isOpen);
+    setIsFileMenuOpen(false);
+  };
+
+  const handleCloseMenus = () => {
+    setIsSettingsMenuOpen(false);
+    setIsFileMenuOpen(false);
   };
 
   return (
@@ -188,12 +212,19 @@ const App = () => {
       <div className={styles.App}>
         <div className={styles.TitleBar}>
           <div className={styles.TitleBarControls}>
-            <span></span>
-            <span></span>
-            <span></span>
+            <div></div>
+            <div></div>
+            <div></div>
           </div>
 
-          <span>Domain model tools</span>
+          <div className={styles.TitleBarTitle}>Domain model tools</div>
+          <menu>
+            <button onClick={handleClickFileMenu}>
+              File
+              <FileMenu isOpen={isFileMenuOpen} closeMenu={handleCloseMenus} />
+            </button>
+            <button onClick={handleClickSettingsMenu}>Settings</button>
+          </menu>
         </div>
         <div className={styles.Canvas}>
           <NetworkCanvas
@@ -204,6 +235,10 @@ const App = () => {
             edges={initialGraph.edges}
           />
           <Inspector selectedNode={selectedNode} />
+          <SettingsMenu
+            isOpen={isSettingsMenuOpen}
+            closeMenu={handleCloseMenus}
+          />
         </div>
       </div>
     </GraphManagerContextProvider>

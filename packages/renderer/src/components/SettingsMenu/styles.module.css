@@ -1,0 +1,10 @@
+.SettingsMenu {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+
+  padding: 20px;
+  background-color: white;
+}
