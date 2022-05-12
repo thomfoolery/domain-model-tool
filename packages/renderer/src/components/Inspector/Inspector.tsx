@@ -1,36 +1,41 @@
-import { useNodeAtom, useGraphManager } from "@/hooks";
+import { useRecoilValue } from "recoil";
+
+import { useNodeState } from "@/hooks";
+import { graphManagerState } from "@/state";
 
 import styles from "./styles.module.css";
 
 interface Props {
-  selectedNode: any;
+  selectedNodeId: string | null;
 }
 
 function Inspector(props: Props) {
-  const { selectedNode } = props;
+  const { selectedNodeId } = props;
 
   const containerStyles = [styles.InspectorContainer];
-  if (selectedNode) {
+  if (selectedNodeId) {
     containerStyles.push(styles.isOpen);
   }
 
   return (
     <div className={containerStyles.join(" ")}>
       <div className={styles.Inspector}>
-        {selectedNode && <InspectorForm selectedNode={selectedNode} />}
+        {selectedNodeId && <InspectorForm selectedNodeId={selectedNodeId} />}
       </div>
     </div>
   );
 }
+interface InspectorFormProps {
+  selectedNodeId: string;
+}
 
-function InspectorForm(props: Props) {
-  const { selectedNode } = props;
+function InspectorForm(props: InspectorFormProps) {
+  const { selectedNodeId } = props;
 
-  const graphManager = useGraphManager();
-
-  const [labelValue, setLabelValue] = useNodeAtom(selectedNode.id, "label");
-  const [descriptionValue, setDescriptionValue] = useNodeAtom(
-    selectedNode.id,
+  const graphManager = useRecoilValue(graphManagerState);
+  const [labelValue, setLabelValue] = useNodeState(selectedNodeId, "label");
+  const [descriptionValue, setDescriptionValue] = useNodeState(
+    selectedNodeId,
     "description"
   );
 
@@ -43,26 +48,26 @@ function InspectorForm(props: Props) {
   };
 
   const handleClickDelete = () => {
-    graphManager.removeNodeById(selectedNode.id);
+    graphManager.removeNodeById(selectedNodeId);
     // TODO cleanup node data & atoms
   };
 
   return (
     <div className={styles.InspectorForm}>
-      <label htmlFor={`${selectedNode.id}-label`}>Label</label>
+      <label htmlFor={`${selectedNodeId}-label`}>Label</label>
       <input
         type="text"
         value={labelValue}
         autoFocus={labelValue === ""}
         onChange={onChangeLabelValue}
-        id={`${selectedNode.id}-label`}
+        id={`${selectedNodeId}-label`}
       />
 
-      <label htmlFor={`${selectedNode.id}-description`}>Description</label>
+      <label htmlFor={`${selectedNodeId}-description`}>Description</label>
       <textarea
         value={descriptionValue}
         onChange={onChangeDescriptionValue}
-        id={`${selectedNode.id}-description`}
+        id={`${selectedNodeId}-description`}
         rows={5}
       />
       <div className={styles.InspectorformActions}>

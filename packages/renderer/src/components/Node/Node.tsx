@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useRecoilValue } from "recoil";
 
-import { useNodeAtom, useGraphManager } from "@/hooks";
+import { useNodeState } from "@/hooks";
+import { graphManagerState } from "@/state";
 
 import styles from "./styles.module.css";
 
@@ -21,16 +23,17 @@ function Node(props: any) {
     top: position.y,
   };
 
-  const graphManager = useGraphManager();
-  const [labelValue] = useNodeAtom(node.id, "label");
+  const graphManager = useRecoilValue(graphManagerState);
+  const [labelValue] = useNodeState(node.id, "label");
 
   const [isDraggingPort, setIsDraggingPort] = useState(false);
 
   const onMouseEnter = () => {
-    if (graphManager?.dragData?.source === "port") {
+    if (graphManager?.dragManager?.dragData?.source === "port") {
       setIsDraggingPort(true);
     }
   };
+
   const onMouseLeave = () => {
     setIsDraggingPort(false);
   };
