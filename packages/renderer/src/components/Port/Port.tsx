@@ -30,7 +30,6 @@ function Port(props: Props) {
           className={styles.PortTarget}
         />
       )}
-      {port.label && <div className={styles.PortLabel}>{port.label}</div>}
       {type === "output" && (
         <div
           id={`Port-${port.id}`}

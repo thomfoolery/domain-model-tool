@@ -1,2 +1,2 @@
+export * from "./isFileContentsValid";
 export * from "./isFormElementActive";
-export * from "./persistData";

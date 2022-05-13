@@ -1,7 +1,9 @@
 import { useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 
-import { appFilePathState } from "@/state";
+import { clearState, clearGraph } from "@/state";
+import { appFilePathState } from "@/state/atoms";
+import { useSaveFile, useLoadFile } from "@/hooks";
 
 import styles from "./styles.module.css";
 
@@ -12,27 +14,30 @@ interface Props {
 
 function FileMenu(props: Props) {
   const { isOpen, closeMenu } = props;
-  // const [graphManager] = useGraphManager();
-  const [appFilePath, setAppFilePath] = useRecoilState(appFilePathState);
+  const saveFile = useSaveFile();
+  const loadFile = useLoadFile();
+  const appFilePath = useRecoilValue(appFilePathState);
 
   useEffect(() => {
     function handleKeyDown(e) {
       if ((e.key === "Escape" || e.keyCode === 27) && isOpen) {
         closeMenu();
       }
+      if (e.key === "s" && e.metaKey) {
+        saveFile(appFilePath);
+      }
     }
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, closeMenu]);
+  }, [isOpen, appFilePath, closeMenu]);
 
   const handleClickNewFile = () => {
     closeMenu();
-    window.saveFileDialog().then((saveAsFilePath) => {
-      if (saveAsFilePath) {
-        setAppFilePath(saveAsFilePath);
-        // clearState(graphManager);
-        // saveFile();
+    window.saveFileDialog().then((saveFilePath) => {
+      if (saveFilePath) {
+        clearState();
+        saveFile(saveFilePath);
       }
     });
   };
@@ -42,30 +47,33 @@ function FileMenu(props: Props) {
     window.openFileDialog().then((result) => {
       if (result) {
         const [openFilePath] = result;
-        setAppFilePath(openFilePath);
-        // loadFile(openFilePath, graphManager);
+        loadFile(openFilePath);
       }
     });
   };
 
   const handleClickSave = () => {
     closeMenu();
-    // saveFile(appFilePath);
+    saveFile(appFilePath);
   };
 
   const handleClickSaveAs = () => {
     closeMenu();
-    window.saveFileDialog().then((saveAsFilePath) => {
-      if (saveAsFilePath) {
-        setAppFilePath(saveAsFilePath);
-        // saveFile(saveAsFilePath);
+    window.saveFileDialog().then((saveFilePath) => {
+      if (saveFilePath) {
+        saveFile(saveFilePath);
       }
     });
   };
 
   const handleClickReload = () => {
     closeMenu();
-    // loadFile(filePath, graphManager);
+    loadFile(appFilePath);
+  };
+
+  const handleClickClear = () => {
+    closeMenu();
+    clearGraph();
   };
 
   return isOpen ? (
@@ -77,6 +85,7 @@ function FileMenu(props: Props) {
       </button>
       <button onClick={handleClickSaveAs}>Save as...</button>
       <button onClick={handleClickReload}>Reload</button>
+      <button onClick={handleClickClear}>Clear</button>
     </div>
   ) : null;
 }

@@ -1,7 +1,7 @@
 import { useRecoilValue } from "recoil";
 
 import { useNodeState } from "@/hooks";
-import { graphManagerState } from "@/state";
+import { graphManagerState } from "@/state/atoms";
 
 import styles from "./styles.module.css";
 

@@ -1,12 +1,19 @@
-import { useRef, useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { NetworkCanvas } from "react-network-canvas";
+import { getRecoil } from "recoil-nexus";
 import { v1 as generateUuid } from "uuid";
 
-import { useInitialGraph } from "@/hooks";
-import { isFormElementActive, persistData } from "@/utils";
-import { graphManagerState, appFilePathState } from "@/state";
 import { Node, Port, Inspector, FileMenu, SettingsMenu } from "@/components";
+import { useRestorePersistedData } from "@/hooks";
+import { isFormElementActive } from "@/utils";
+
+import { removeNodeData } from "@/state";
+import {
+  graphManagerState,
+  graphDataState,
+  appFilePathState,
+} from "@/state/atoms";
 
 import styles from "./styles.module.css";
 import { theme } from "./theme";
@@ -51,30 +58,33 @@ function Marker(props: { id: string; color: string }) {
 }
 
 const App = () => {
+  const setGraphData = useSetRecoilState(graphDataState);
   const setGraphManager = useSetRecoilState(graphManagerState);
   const [isFileMenuOpen, setIsFileMenuOpen] = useState<boolean>(false);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [isSettingsMenuOpen, setIsSettingsMenuOpen] = useState<boolean>(false);
 
   const appFilePath = useRecoilValue(appFilePathState);
-  const initialGraph = useInitialGraph();
-  const graphManagerRef = useRef(null);
+
+  useRestorePersistedData();
 
   const onMount = useCallback(
     (graphManager: any) => {
-      graphManagerRef.current = graphManager;
       setGraphManager(graphManager);
+      graphManager.import(getRecoil(graphDataState));
     },
     [setGraphManager]
   );
 
-  // const onMutateGraph = useCallback(() => {
-  //   persistData({
-  //     appFilePath,
-  //     nodeData: {},
-  //     graphData: graphManagerRef.current.export(),
-  //   });
-  // }, [appFilePath]);
+  const onMutateGraph = useCallback(
+    (event: any, graphManager: any) => {
+      if (event.action === "DELETE_NODE") {
+        removeNodeData(event.subject.id);
+      }
+      setGraphData({ ...graphManager.export() });
+    },
+    [appFilePath]
+  );
 
   const onKeyPress = useCallback((event, key, graphManager) => {
     if (
@@ -244,11 +254,11 @@ const App = () => {
         <NetworkCanvas
           theme={theme}
           options={OPTIONS}
-          initialGraph={initialGraph}
+          // initialGraph={initialGraph}
           onMount={onMount}
           onKeyPress={onKeyPress}
           onClickPort={onClickPort}
-          // onMutateGraph={onMutateGraph}
+          onMutateGraph={onMutateGraph}
           onClickCanvas={onClickCanvas}
           onChangeSelectedNodeIds={onChangeSelectedNodeIds}
         />

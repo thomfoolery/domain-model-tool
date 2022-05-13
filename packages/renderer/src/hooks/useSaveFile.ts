@@ -1,14 +1,21 @@
-import { useRecoilValue } from "recoil";
+import { useCallback } from "react";
+import { getRecoil, setRecoil } from "recoil-nexus";
 
-import { appFilePathState } from "@/state";
+import { graphDataState, nodeDataState, appFilePathState } from "@/state/atoms";
 
 function useSaveFile() {
-  const [appFilePath] = useRecoilValue(appFilePathState);
+  return useCallback((appFilePath: string) => {
+    const graphData = getRecoil(graphDataState);
+    const nodeData = getRecoil(nodeDataState);
 
-  return () => {
-    const serializedState = "{}";
-    window.fs.writeFileSync(appFilePath, serializedState);
-  };
+    const state = JSON.stringify({
+      graphData,
+      nodeData,
+    });
+
+    setRecoil(appFilePathState, appFilePath);
+    window.fs.writeFileSync(appFilePath, state);
+  }, []);
 }
 
 export { useSaveFile };

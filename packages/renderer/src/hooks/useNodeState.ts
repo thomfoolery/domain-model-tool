@@ -1,34 +1,9 @@
-import { atomFamily, useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 
-import { updateNodeData } from "@/state";
-
-const nodeLabelAtom = atomFamily({
-  key: "label",
-  default: "",
-  effects: (nodeId: string) => [
-    ({ onSet }) => {
-      onSet((value: string) => updateNodeData(nodeId, `label`, value));
-    },
-  ],
-});
-
-const nodeDescriptionAtom = atomFamily({
-  key: "description",
-  default: "",
-  effects: (nodeId: string) => [
-    ({ onSet }) => {
-      onSet((value: string) => updateNodeData(nodeId, `descriptions`, value));
-    },
-  ],
-});
-
-const atomHashTable: any = {
-  label: nodeLabelAtom,
-  description: nodeDescriptionAtom,
-};
+import { nodeAtomFamilyHashTable } from "@/state/atoms";
 
 function useNodeState(nodeId: string, key: string) {
-  const atomFamilyInstance = atomHashTable[key];
+  const atomFamilyInstance = nodeAtomFamilyHashTable[key];
 
   if (!atomFamilyInstance) {
     throw Error(`Key '${key}' is not supported`);

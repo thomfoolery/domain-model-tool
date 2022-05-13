@@ -1,18 +1,68 @@
-import { atom } from "recoil";
+import { getRecoil, setRecoil } from "recoil-nexus";
 
-const appFilePathState = atom({ key: "appFilePath", default: "" });
-const graphManagerState = atom({ key: "graphManager", default: null });
-
-const NODE_DATA: any = {};
+import {
+  nodeDataState,
+  graphDataState,
+  appFilePathState,
+  graphManagerState,
+} from "@/state/atoms";
 
 function updateNodeData(nodeId: string, key: string, value: any) {
-  if (!NODE_DATA[nodeId]) NODE_DATA[nodeId] = {};
-
-  NODE_DATA[nodeId][key] = value;
+  setRecoil(nodeDataState, (nodeData) => {
+    persistData();
+    return !nodeData[nodeId]
+      ? { ...nodeData, [nodeId]: { [key]: value } }
+      : { ...nodeData, [nodeId]: { ...nodeData[nodeId], [key]: value } };
+  });
 }
 
 function removeNodeData(nodeId: string) {
-  delete NODE_DATA[nodeId];
+  setRecoil(nodeDataState, (nodeData) => {
+    persistData();
+    return { ...nodeData, [nodeId]: undefined };
+  });
 }
 
-export { appFilePathState, graphManagerState, updateNodeData, removeNodeData };
+function clearState() {
+  const graphManager = getRecoil(graphManagerState);
+
+  setRecoil(appFilePathState, "");
+  setRecoil(graphDataState, { nodes: [], edges: [] });
+  setRecoil(nodeDataState, {});
+
+  graphManager.import({ nodes: [], edges: [] });
+}
+
+function clearGraph() {
+  const graphManager = getRecoil(graphManagerState);
+
+  setRecoil(graphDataState, { nodes: [], edges: [] });
+  setRecoil(nodeDataState, {});
+
+  graphManager.import({ nodes: [], edges: [] });
+}
+
+let debounceTimeout: any = null;
+const DEBOUNCE_DURATION = 2000;
+
+function persistData() {
+  if (debounceTimeout) {
+    clearTimeout(debounceTimeout);
+  }
+
+  debounceTimeout = setTimeout(() => {
+    const appFilePath = getRecoil(appFilePathState);
+    const graphData = getRecoil(graphDataState);
+    const nodeData = getRecoil(nodeDataState);
+    const state = JSON.stringify({
+      appFilePath,
+      graphData,
+      nodeData,
+    });
+
+    localStorage.setItem("state", state);
+    debounceTimeout = null;
+  }, DEBOUNCE_DURATION);
+}
+
+export { updateNodeData, removeNodeData, clearState, clearGraph, persistData };
