@@ -32,7 +32,9 @@ function useRestorePersistedData() {
       Object.entries(nodeData).forEach(([nodeId, data]) => {
         Object.entries(data).forEach(([key, value]) => {
           const atomFamily = nodeAtomFamilyHashTable[key];
-          setRecoil(atomFamily(nodeId), value);
+          if (atomFamily) {
+            setRecoil(atomFamily(nodeId), value);
+          }
         });
       });
     }

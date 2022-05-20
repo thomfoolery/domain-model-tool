@@ -30,6 +30,24 @@ const graphManagerState = atom({
   default: null,
 });
 
+const nodeSizeAtomFamily = atomFamily({
+  key: "size",
+  default: "md",
+  effects: (nodeId: string) => [
+    ({ onSet }) =>
+      onSet((value: string) => updateNodeData(nodeId, `size`, value)),
+  ],
+});
+
+const nodeColorAtomFamily = atomFamily({
+  key: "color",
+  default: "green",
+  effects: (nodeId: string) => [
+    ({ onSet }) =>
+      onSet((value: string) => updateNodeData(nodeId, `color`, value)),
+  ],
+});
+
 const nodeLabelAtomFamily = atomFamily({
   key: "label",
   default: "",
@@ -49,6 +67,8 @@ const nodeDescriptionAtomFamily = atomFamily({
 });
 
 const nodeAtomFamilyHashTable: any = {
+  size: nodeSizeAtomFamily,
+  color: nodeColorAtomFamily,
   label: nodeLabelAtomFamily,
   description: nodeDescriptionAtomFamily,
 };
@@ -58,6 +78,8 @@ export {
   graphDataState,
   appFilePathState,
   graphManagerState,
+  nodeSizeAtomFamily,
+  nodeColorAtomFamily,
   nodeLabelAtomFamily,
   nodeDescriptionAtomFamily,
   nodeAtomFamilyHashTable,

@@ -24,6 +24,8 @@ function Node(props: any) {
   };
 
   const graphManager = useRecoilValue(graphManagerState);
+  const [sizeValue] = useNodeState(node.id, "size");
+  const [colorValue] = useNodeState(node.id, "color");
   const [labelValue] = useNodeState(node.id, "label");
 
   const [isDraggingPort, setIsDraggingPort] = useState(false);
@@ -38,7 +40,11 @@ function Node(props: any) {
     setIsDraggingPort(false);
   };
 
-  const containerClassList = [styles.Node];
+  const containerClassList = [
+    styles.Node,
+    styles[`Size-${sizeValue}`],
+    styles[`Color-${colorValue}`],
+  ];
 
   if (isDraggingPort) {
     containerClassList.push(styles.isDraggingPort);

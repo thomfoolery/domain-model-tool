@@ -33,6 +33,8 @@ function InspectorForm(props: InspectorFormProps) {
   const { selectedNodeId } = props;
 
   const graphManager = useRecoilValue(graphManagerState);
+  const [sizeValue, setSizeValue] = useNodeState(selectedNodeId, "size");
+  const [colorValue, setColorValue] = useNodeState(selectedNodeId, "color");
   const [labelValue, setLabelValue] = useNodeState(selectedNodeId, "label");
   const [descriptionValue, setDescriptionValue] = useNodeState(
     selectedNodeId,
@@ -49,7 +51,14 @@ function InspectorForm(props: InspectorFormProps) {
 
   const handleClickDelete = () => {
     graphManager.removeNodeById(selectedNodeId);
-    // TODO cleanup node data & atoms
+  };
+
+  const handleChangeSize = (e) => {
+    setSizeValue(e.target.value);
+  };
+
+  const handleChangeColor = (e) => {
+    setColorValue(e.target.value);
   };
 
   return (
@@ -70,6 +79,77 @@ function InspectorForm(props: InspectorFormProps) {
         id={`${selectedNodeId}-description`}
         rows={5}
       />
+
+      <div className={styles.Row}>
+        <fieldset>
+          <legend>Size</legend>
+          <label>
+            <input
+              type="radio"
+              name="size"
+              value="sm"
+              onChange={handleChangeSize}
+              checked={sizeValue === "sm"}
+            />
+            Small
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="size"
+              value="md"
+              onChange={handleChangeSize}
+              checked={sizeValue === "md"}
+            />
+            Medium
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="size"
+              value="lg"
+              onChange={handleChangeSize}
+              checked={sizeValue === "lg"}
+            />
+            Large
+          </label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Color</legend>
+          <label>
+            <input
+              type="radio"
+              name="color"
+              value="red"
+              onChange={handleChangeColor}
+              checked={colorValue === "red"}
+            />
+            Red
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="color"
+              value="green"
+              onChange={handleChangeColor}
+              checked={colorValue === "green"}
+            />
+            Green
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="color"
+              value="blue"
+              onChange={handleChangeColor}
+              checked={colorValue === "blue"}
+            />
+            Blue
+          </label>
+        </fieldset>
+      </div>
+
       <div className={styles.InspectorformActions}>
         <button onClick={handleClickDelete}>Delete</button>
       </div>

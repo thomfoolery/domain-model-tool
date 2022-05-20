@@ -56,6 +56,39 @@
   margin-top: 10px;
 }
 
+.InspectorForm fieldset {
+  border-radius: 4px;
+  border: 1px solid #029474;
+  background-color: white;
+}
+
+.InspectorForm fieldset legend {
+  display: none;
+  background-color: #d4fff6;
+  color: #00755b;
+  padding: 4px;
+  border-radius: 4px;
+  border: 1px solid #029474;
+  font-size: 12px;
+  margin: 0;
+}
+
+.InspectorForm fieldset label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0;
+}
+
+.InspectorForm fieldset label + label {
+  margin-top: 8px;
+}
+
+.InspectorForm input[type="radio"] {
+  width: auto;
+  margin-right: 4px;
+}
+
 .InspectorformActions button {
   -webkit-appearance: none;
   border: none;
@@ -65,4 +98,15 @@
 
   padding: 5px 10px;
   border-radius: 4px;
+}
+
+.Row {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.Row > * {
+  flex: 1;
+  margin-top: 10px;
 }

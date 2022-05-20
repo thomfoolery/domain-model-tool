@@ -30,7 +30,6 @@
   line-height: 20px;
   min-height: 20px;
   font-weight: bold;
-  color: #00755b;
 }
 
 .NodeInputPorts,
@@ -86,4 +85,52 @@
 .NodeOutputPorts > *:nth-child(4) {
   left: 0;
   top: 20px;
+}
+
+.Size-sm .NodeContent {
+  --width: 160px;
+
+  position: relative;
+  width: var(--width);
+}
+
+.Size-md .NodeContent {
+  --width: 200px;
+
+  position: relative;
+  width: var(--width);
+}
+
+.Size-lg .NodeContent {
+  --width: 240px;
+
+  position: relative;
+  width: var(--width);
+}
+
+.Color-red .NodeContent {
+  color: #750000;
+  background-color: #ffd4d4;
+  outline: 1px solid #9e0000;
+}
+.Color-red.isSelected .NodeContent {
+  background-color: #ffa1a1;
+}
+
+.Color-green .NodeContent {
+  color: #00755b;
+  background-color: #d4fff6;
+  outline: 1px solid #009e7b;
+}
+.Color-green.isSelected .NodeContent {
+  background-color: #00ffc8;
+}
+
+.Color-blue .NodeContent {
+  color: #002d75;
+  background-color: #d4e9ff;
+  outline: 1px solid #004a9e;
+}
+.Color-blue.isSelected .NodeContent {
+  background-color: #a1ceff;
 }
